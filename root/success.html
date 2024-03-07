@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorization Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thank You!</h1>
+    <p>Your authentication process is successful. Please wait while we process your data.</p>
+    <script>
+        function getURLParameter(name) {
+            return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+        }
+
+        let code = getURLParameter('code');
+
+        if (code) {
+            // Change this URL to your backend PHP script's URL
+            let exchangeUrl = 'http://jesperbeerepoot.com/exchange_tokens.php';
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", exchangeUrl, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    // Handle response here
+                    console.log(xhr.responseText);
+                    // Further actions based on the response, e.g., redirecting to another page
+                }
+            }
+
+            xhr.send("code=" + code);
+        } else {
+            document.body.innerHTML += '<p>Authorization failed or was cancelled.</p>';
+        }
+    </script>
+</body>
+</html>
